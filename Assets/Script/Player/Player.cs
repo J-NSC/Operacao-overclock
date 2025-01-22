@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         StateMachine.Update();
+        InputCheck();
         
         Debug.Log("Direção do Movimento: " + direction);
     }
@@ -42,6 +43,18 @@ public class Player : MonoBehaviour
 
     private void InputCheck()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                TargetPosition = hit.point;
+                IsMoving = true;
+            }
+        }
+        
         direction = (TargetPosition - transform.position).normalized;
     }
 }

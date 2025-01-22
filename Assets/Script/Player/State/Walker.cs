@@ -34,17 +34,7 @@ public class Walker : State
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                _player.TargetPosition = hit.point;
-                _player.IsMoving = true;
-            }
-        }
+  
 
         if (_player.IsMoving)
         {
