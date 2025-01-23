@@ -24,6 +24,7 @@ public class Walker : State
     public override void Update()
     {
         base.Update();
+        
 
         if (_player.direction == Vector3.zero)
         {
@@ -38,7 +39,7 @@ public class Walker : State
 
         if (_player.IsMoving)
         {
-            _player.transform.position += _player.direction * (_player.speed * Time.deltaTime);
+            _player.transform.position += _player.direction * (_player.maxSpeed * Time.deltaTime);
 
             if (Vector3.Distance(_player.transform.position, _player.TargetPosition) < 0.1f)
             {

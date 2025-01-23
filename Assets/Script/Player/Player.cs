@@ -11,16 +11,23 @@ public class Player : MonoBehaviour
     
     public Vector3 direction;
 
-    public float speed = 5f;
+    public float maxSpeed = 5f;
+    public float speed;
     public Vector3 TargetPosition;
     public bool IsMoving = false;
 
+    public Animator anim;
+    public Rigidbody rb;
+    
     private void Awake()
     {
         StateMachine = new StateMachine();
         Idle = new Idle(this);
         Walker = new Walker(this);
         StateMachine.ChangeState(Idle);
+
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -33,7 +40,11 @@ public class Player : MonoBehaviour
         StateMachine.Update();
         InputCheck();
         
-        Debug.Log("Direção do Movimento: " + direction);
+        float velocity = rb.linearVelocity.magnitude;
+        speed = velocity / maxSpeed;
+        anim.SetFloat("speed", speed);
+        RotateBodyToFaceTouch();
+
     }
 
     private void FixedUpdate()
@@ -54,7 +65,17 @@ public class Player : MonoBehaviour
                 IsMoving = true;
             }
         }
-        
         direction = (TargetPosition - transform.position).normalized;
     }
+
+    public void RotateBodyToFaceTouch()
+    {
+        if (direction == Vector3.zero) return;
+    
+        Vector3 lookDirection = new Vector3(direction.x, 0f, direction.z); 
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+    
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+    }
+
 }
