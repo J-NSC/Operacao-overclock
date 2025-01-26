@@ -1,47 +1,102 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
+    PlayerInputs _inputs;
+    public NavMeshAgent agent;
+
+    [SerializeField] ParticleSystem clickEffect;
+    [SerializeField] LayerMask clickbleLayers;
+
     public StateMachine StateMachine;
     
     public Idle Idle;
     public Walker Walker;
     
     public Vector3 direction;
-
-    public float speed = 5f;
+    public float maxSpeed = 5f;
+    public float speed;
     public Vector3 TargetPosition;
     public bool IsMoving = false;
 
-    private void Awake()
+    public Animator anim;
+    public Rigidbody rb;
+
+    void Awake()
     {
         StateMachine = new StateMachine();
         Idle = new Idle(this);
         Walker = new Walker(this);
         StateMachine.ChangeState(Idle);
+
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
+
+        _inputs = new PlayerInputs();
+        AssignInputs();
     }
 
-    private void Start()
+    void OnEnable()
     {
-        TargetPosition = transform.position;
+        _inputs.Enable();
     }
+    void OnDisable()
+    {
+        _inputs.Disable();
+    }
+    
+    void Start() => TargetPosition = transform.position;
 
-    private void Update()
+    void Update()
     {
         StateMachine.Update();
-        
-        Debug.Log("Direção do Movimento: " + direction);
+
+        speed = agent.velocity.magnitude / maxSpeed;
+        anim.SetFloat("speed", speed);
+
+        RotateBodyToFaceTouch();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         StateMachine.FixedUpdate();
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
     }
 
-    private void InputCheck()
+    public void RotateBodyToFaceTouch()
     {
-        direction = (TargetPosition - transform.position).normalized;
+        if (direction == Vector3.zero) return;
+
+        Vector3 lookDirection = new Vector3(direction.x, 0f, direction.z);
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+    }
+
+    void AssignInputs()
+    {
+        _inputs.Main.Move.performed += ctx => ClickToMove();
+    }
+
+    void ClickToMove()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100, clickbleLayers))
+        {
+            agent.destination = hit.point;
+            TargetPosition = hit.point;
+
+            if (clickEffect != null)
+            {
+                ParticleSystem instantiatedEffect = Instantiate(clickEffect, hit.point + new Vector3(0, 0.1f, 0), clickEffect.transform.rotation);
+                Destroy(instantiatedEffect.gameObject, instantiatedEffect.main.duration + instantiatedEffect.main.startLifetime.constantMax);
+            }
+
+            direction = (agent.destination - transform.position).normalized;
+            StateMachine.ChangeState(Walker);
+        }
     }
 }
