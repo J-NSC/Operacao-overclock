@@ -29,4 +29,9 @@ public class CollectCoinsQuestStep : QuestStep
          FinishQuestStep(); 
       }
    }
+
+   protected override void SetQuestStepState(string state)
+   {
+      throw new NotImplementedException();
+   }
 }

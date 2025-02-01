@@ -3,23 +3,20 @@ using UnityEngine;
 
 public class GameEventsManager : MonoBehaviour
 {
-    public static GameEventsManager instance;
-    
-    
-    // public InputEvents inputEvents;
+    public static GameEventsManager instance { get; private set; }
+
     public MiscEvents miscEvents;
     public QuestEvents questEvents;
 
-
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
         {
-            Debug.Log("Found more than one game Events Manager in the scene");
+            Debug.LogError("Found more than one Game Events Manager in the scene.");
         }
-        
         instance = this;
 
+        // initialize all events
         miscEvents = new MiscEvents();
         questEvents = new QuestEvents();
     }
