@@ -5,10 +5,10 @@ using UnityEngine;
 public class QuestIcon : MonoBehaviour
 {
     [Header("Icons")]
-    [SerializeField] private GameObject requirementsNotMetToStartIcon;
-    [SerializeField] private GameObject canStartIcon;
-    [SerializeField] private GameObject requirementsNotMetToFinishIcon;
-    [SerializeField] private GameObject canFinishIcon;
+    [SerializeField] GameObject requirementsNotMetToStartIcon;
+    [SerializeField] GameObject canStartIcon;
+    [SerializeField] GameObject requirementsNotMetToFinishIcon;
+    [SerializeField] GameObject canFinishIcon;
 
     public void SetState(QuestState newState, bool startPoint, bool finishPoint)
     {

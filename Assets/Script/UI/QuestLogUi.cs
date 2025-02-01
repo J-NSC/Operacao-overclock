@@ -10,12 +10,12 @@ public class QuestLogUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private GameObject contentParent;
     [SerializeField] private QuestLogScrollingList scrollingList;
-    [SerializeField] private TextMeshProUGUI questDisplayNameText;
-    [SerializeField] private TextMeshProUGUI questStatusText;
-    [SerializeField] private TextMeshProUGUI goldRewardsText;
-    [SerializeField] private TextMeshProUGUI experienceRewardsText;
-    [SerializeField] private TextMeshProUGUI levelRequirementsText;
-    [SerializeField] private TextMeshProUGUI questRequirementsText;
+    // [SerializeField] private TextMeshProUGUI questDisplayNameText;
+    // [SerializeField] private TextMeshProUGUI questStatusText;
+    // [SerializeField] private TextMeshProUGUI goldRewardsText;
+    // [SerializeField] private TextMeshProUGUI experienceRewardsText;
+    // [SerializeField] private TextMeshProUGUI levelRequirementsText;
+    // [SerializeField] private TextMeshProUGUI questRequirementsText;
 
     private Button firstSelectedButton;
 
@@ -83,21 +83,21 @@ public class QuestLogUI : MonoBehaviour
     private void SetQuestLogInfo(Quest quest)
     {
         // quest name
-        questDisplayNameText.text = quest.info.displayName;
-
-        // status
-        questStatusText.text = quest.GetFullStatusText();
-
-        // requirements
-        levelRequirementsText.text = "Level " + quest.info.levelRequirement;
-        questRequirementsText.text = "";
-        foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
-        {
-            questRequirementsText.text += prerequisiteQuestInfo.displayName + "\n";
-        }
-
-        // rewards
-        goldRewardsText.text = quest.info.goldReward + " Gold";
-        experienceRewardsText.text = quest.info.experienceReward + " XP";
+        // questDisplayNameText.text = quest.info.displayName;
+        //
+        // // status
+        // questStatusText.text = quest.GetFullStatusText();
+        //
+        // // requirements
+        // levelRequirementsText.text = "Level " + quest.info.levelRequirement;
+        // questRequirementsText.text = "";
+        // foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
+        // {
+        //     questRequirementsText.text += prerequisiteQuestInfo.displayName + "\n";
+        // }
+        //
+        // // rewards
+        // goldRewardsText.text = quest.info.goldReward + " Gold";
+        // experienceRewardsText.text = quest.info.experienceReward + " XP";
     }
 }

@@ -153,7 +153,7 @@ public class QuestManager : MonoBehaviour
             {
                 Debug.LogWarning("Duplicate ID found when creating quest map: " + questInfo.id);
             }
-            idToQuestMap.Add(questInfo.id, LoadQuest(questInfo));
+            idToQuestMap.Add(questInfo.id, new Quest(questInfo));
         }
         return idToQuestMap;
     }

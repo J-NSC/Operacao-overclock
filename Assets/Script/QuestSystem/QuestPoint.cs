@@ -3,44 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(SphereCollider))]
 public class QuestPoint : MonoBehaviour
 {
     [Header("Dialogue (optional)")]
-    [SerializeField] private string dialogueKnotName;
+    [SerializeField] string dialogueKnotName;
 
     [Header("Quest")]
-    [SerializeField] private QuestInfoSO questInfoForPoint;
+    [SerializeField] QuestInfoSO questInfoForPoint;
 
     [Header("Config")]
-    [SerializeField] private bool startPoint = true;
-    [SerializeField] private bool finishPoint = true;
+    [SerializeField] bool startPoint = true;
+    [SerializeField] bool finishPoint = true;
 
-    private bool playerIsNear = false;
-    private string questId;
-    private QuestState currentQuestState;
+    bool playerIsNear = false;
+    string questId;
+    QuestState currentQuestState;
 
-    private QuestIcon questIcon;
+    QuestIcon questIcon;
 
-    private void Awake() 
+    void Awake() 
     {
         questId = questInfoForPoint.id;
         questIcon = GetComponentInChildren<QuestIcon>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         GameEventsManager.instance.questEvents.onQuestStateChange += QuestStateChange;
         // GameEventsManager.instance.inputEvents.onSubmitPressed += SubmitPressed;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         GameEventsManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
         // GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 
-    // private void SubmitPressed(InputEventContext inputEventContext)
+    // void SubmitPressed(InputEventContext inputEventContext)
     // {
     //     if (!playerIsNear || !inputEventContext.Equals(InputEventContext.DEFAULT))
     //     {
@@ -61,6 +61,7 @@ public class QuestPoint : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(playerIsNear);
 
         if (playerIsNear)
         {
@@ -76,27 +77,34 @@ public class QuestPoint : MonoBehaviour
        
     }
 
-    private void QuestStateChange(Quest quest)
+    void QuestStateChange(Quest quest)
     {
-        // only update the quest state if this point has the corresponding quest
         if (quest.info.id.Equals(questId))
         {
             currentQuestState = quest.state;
-            questIcon.SetState(currentQuestState, startPoint, finishPoint);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D otherCollider)
+
+    void OnTriggerEnter(Collider other)
     {
-        if (otherCollider.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             playerIsNear = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D otherCollider)
+    void OnTriggerExit2D(Collider2D otherCollider)
     {
         if (otherCollider.CompareTag("Player"))
+        {
+            playerIsNear = false;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
             playerIsNear = false;
         }
