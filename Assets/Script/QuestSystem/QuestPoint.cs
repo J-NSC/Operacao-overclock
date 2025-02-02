@@ -92,13 +92,6 @@ public class QuestPoint : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D otherCollider)
-    {
-        if (otherCollider.CompareTag("Player"))
-        {
-            playerIsNear = false;
-        }
-    }
 
     void OnTriggerExit(Collider other)
     {

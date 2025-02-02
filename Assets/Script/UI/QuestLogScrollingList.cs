@@ -6,20 +6,20 @@ using UnityEngine.Events;
 public class QuestLogScrollingList : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private GameObject contentParent;
+    [SerializeField] GameObject contentParent;
 
     [Header("Rect Transforms")]
-    [SerializeField] private RectTransform scrollRectTransform;
-    [SerializeField] private RectTransform contentRectTransform;
+    [SerializeField] RectTransform scrollRectTransform;
+    [SerializeField] RectTransform contentRectTransform;
 
     [Header("Quest Log Button")]
-    [SerializeField] private GameObject questLogButtonPrefab;
+    [SerializeField] GameObject questLogButtonPrefab;
 
-    private Dictionary<string, QuestLogButton> idToButtonMap = new Dictionary<string, QuestLogButton>();
+    Dictionary<string, QuestLogButton> idToButtonMap = new Dictionary<string, QuestLogButton>();
 
     // Below is code to test that the scrolling list is working as expected.
     // For it to work, you'll need to change the QuestInfoSO id field to be publicly settable
-    // private void Start()
+    // void Start()
     // {
     //     for (int i = 0; i < 20; i++) 
     //     {
@@ -28,11 +28,11 @@ public class QuestLogScrollingList : MonoBehaviour
     //         questInfoTest.displayName = "Test " + i;
     //         questInfoTest.questStepPrefabs = new GameObject[0];
     //         Quest quest = new Quest(questInfoTest);
-
+    //
     //         QuestLogButton questLogButton = CreateButtonIfNotExists(quest, () => {
     //             Debug.Log("SELECTED: " + questInfoTest.displayName);
     //         });
-
+    //
     //         if (i == 0)
     //         {
     //             questLogButton.button.Select();
@@ -55,7 +55,7 @@ public class QuestLogScrollingList : MonoBehaviour
         return questLogButton;
     }
 
-    private QuestLogButton InstantiateQuestLogButton(Quest quest, UnityAction selectAction)
+    QuestLogButton InstantiateQuestLogButton(Quest quest, UnityAction selectAction)
     {
         // create the button
         QuestLogButton questLogButton = Instantiate(
@@ -74,7 +74,7 @@ public class QuestLogScrollingList : MonoBehaviour
         return questLogButton;
     }
 
-    private void UpdateScrolling(RectTransform buttonRectTransform)
+    void UpdateScrolling(RectTransform buttonRectTransform)
     {
         // calculate the min and max for the selected button
         float buttonYMin = Mathf.Abs(buttonRectTransform.anchoredPosition.y);

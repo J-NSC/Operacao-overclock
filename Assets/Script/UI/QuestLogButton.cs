@@ -12,15 +12,13 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
     private TextMeshProUGUI buttonText;
     private UnityAction onSelectAction;
 
-    // because we're instantiating the button and it may be disabled when we
-    // instantiate it, we need to manually initialize anything here.
     public void Initialize(string displayName, UnityAction selectAction) 
     {
-        this.button = this.GetComponent<Button>();
-        this.buttonText = this.GetComponentInChildren<TextMeshProUGUI>();
+        button = GetComponent<Button>();
+        buttonText = GetComponentInChildren<TextMeshProUGUI>();
 
-        this.buttonText.text = displayName;
-        this.onSelectAction = selectAction;
+        buttonText.text = displayName;
+        onSelectAction = selectAction;
     }
 
     public void OnSelect(BaseEventData eventData)
