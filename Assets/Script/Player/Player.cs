@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
-    PlayerInputs _inputs;
+    // PlayerInputs _inputs;
     public NavMeshAgent agent;
 
     [SerializeField] ParticleSystem clickEffect;
@@ -35,20 +35,22 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
 
-        _inputs = new PlayerInputs();
-        AssignInputs();
     }
 
     void OnEnable()
     {
-        _inputs.Enable();
+        GameEventsManager.instance.InputEvent.OnTouchEvent += ClickToMove;
     }
+
     void OnDisable()
     {
-        _inputs.Disable();
+        GameEventsManager.instance.InputEvent.OnTouchEvent -= ClickToMove;
     }
     
-    void Start() => TargetPosition = transform.position;
+    void Start()
+    {
+        TargetPosition = transform.position;
+    }
 
     void Update()
     {
@@ -76,15 +78,10 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
-    void AssignInputs()
-    {
-        _inputs.Main.Move.performed += ctx => ClickToMove();
-    }
-
-    void ClickToMove()
+    void ClickToMove(Vector2 touchPosition)
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100, clickbleLayers))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(touchPosition), out hit, 100, clickbleLayers))
         {
             agent.destination = hit.point;
             TargetPosition = hit.point;

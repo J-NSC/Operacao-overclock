@@ -61,8 +61,6 @@ public class QuestPoint : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(playerIsNear);
-
         if (playerIsNear)
         {
             if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)

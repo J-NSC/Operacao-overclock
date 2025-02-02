@@ -1,0 +1,2 @@
+E:\Projetos\OO\Operacao-overclock\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+E:\Projetos\OO\Operacao-overclock\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

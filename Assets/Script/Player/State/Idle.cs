@@ -13,7 +13,7 @@ public class Idle : State
     {
         base.Enter();
         player.IsMoving = false;
-        player.agent.isStopped = true;
+        // player.agent.isStopped = true;
     }
 
     public override void Update()

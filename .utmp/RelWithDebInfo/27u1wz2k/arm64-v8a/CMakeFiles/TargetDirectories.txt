@@ -1,0 +1,5 @@
+E:/Projetos/OO/Operacao-overclock/.utmp/RelWithDebInfo/27u1wz2k/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/Projetos/OO/Operacao-overclock/.utmp/RelWithDebInfo/27u1wz2k/arm64-v8a/CMakeFiles/rebuild_cache.dir
+E:/Projetos/OO/Operacao-overclock/.utmp/RelWithDebInfo/27u1wz2k/arm64-v8a/GameActivity/CMakeFiles/game.dir
+E:/Projetos/OO/Operacao-overclock/.utmp/RelWithDebInfo/27u1wz2k/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+E:/Projetos/OO/Operacao-overclock/.utmp/RelWithDebInfo/27u1wz2k/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

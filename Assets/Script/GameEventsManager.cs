@@ -7,8 +7,9 @@ public class GameEventsManager : MonoBehaviour
 
     public MiscEvents miscEvents;
     public QuestEvents questEvents;
+    public InputEvent InputEvent;
 
-    private void Awake()
+    void Awake()
     {
         if (instance != null)
         {
@@ -19,5 +20,6 @@ public class GameEventsManager : MonoBehaviour
         // initialize all events
         miscEvents = new MiscEvents();
         questEvents = new QuestEvents();
+        InputEvent = new InputEvent();
     }
 }
