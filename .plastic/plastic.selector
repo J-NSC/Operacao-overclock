@@ -1,4 +1,3 @@
 repository "OperacoOverclock@Fracionando@cloud"
   path "/"
-    br "/main"
-    co "/main"
+    smartbranch "/main/Develop"
