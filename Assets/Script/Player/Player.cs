@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         StateMachine.Update();
 
         speed = agent.velocity.magnitude / maxSpeed;
-        anim.SetFloat("speed", speed);
+        // anim.SetFloat("speed", speed);
 
         RotateBodyToFaceTouch();
     }

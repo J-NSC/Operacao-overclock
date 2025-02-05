@@ -62,42 +62,25 @@ public class QuestLogUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
-    void QuestStateChange(Quest quest)
+   void QuestStateChange(Quest quest)
+{
+    if (quest.state == QuestState.IN_PROGRESS)
     {
-        // add the button to the scrolling list if not already added
         QuestLogButton questLogButton = scrollingList.CreateButtonIfNotExists(quest, () => {
             SetQuestLogInfo(quest);
         });
 
-        // initialize the first selected button if not already so that it's
-        // always the top button
         if (firstSelectedButton == null)
         {
             firstSelectedButton = questLogButton.button;
         }
 
-        // set the button color based on quest state
         questLogButton.SetState(quest.state);
     }
+}
+
 
     void SetQuestLogInfo(Quest quest)
     {
-        // quest name
-        // questDisplayNameText.text = quest.info.displayName;
-        //
-        // // status
-        // questStatusText.text = quest.GetFullStatusText();
-        //
-        // // requirements
-        // levelRequirementsText.text = "Level " + quest.info.levelRequirement;
-        // questRequirementsText.text = "";
-        // foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
-        // {
-        //     questRequirementsText.text += prerequisiteQuestInfo.displayName + "\n";
-        // }
-        //
-        // // rewards
-        // goldRewardsText.text = quest.info.goldReward + " Gold";
-        // experienceRewardsText.text = quest.info.experienceReward + " XP";
     }
 }

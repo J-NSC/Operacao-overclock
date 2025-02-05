@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Walker : State
 {
-    private Player player;
+    Player player;
 
     public Walker(Player player) : base("Walker")
     {
@@ -13,6 +13,7 @@ public class Walker : State
     {
         base.Enter();
         player.IsMoving = true;
+        player.anim.Play("Walker");
         player.agent.isStopped = false;
     }
 

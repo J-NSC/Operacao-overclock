@@ -65,7 +65,9 @@ public class QuestPoint : MonoBehaviour
         {
             if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
             {
-                GameEventsManager.instance.questEvents.StartQuest(questId);
+                // GameEventsManager.instance.questEvents.StartQuest(questId);
+                GameEventsManager.instance.dialogQuestEvents.ShowDialogedQuest(questId);
+
             }
             else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
             {
@@ -89,6 +91,7 @@ public class QuestPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerIsNear = true;
+            GameEventsManager.instance.dialogQuestEvents.ShowTextQuest(questInfoForPoint);
         }
     }
 

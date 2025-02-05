@@ -13,6 +13,7 @@ public class Idle : State
     {
         base.Enter();
         player.IsMoving = false;
+        player.anim.Play("Idle");
         // player.agent.isStopped = true;
     }
 
@@ -20,7 +21,6 @@ public class Idle : State
     {
         base.Update();
         
-        // Se o agente tiver um destino diferente da posição atual, mudar para Walking
         if (player.agent.remainingDistance > 0.1f)
         {
             player.StateMachine.ChangeState(player.Walker);

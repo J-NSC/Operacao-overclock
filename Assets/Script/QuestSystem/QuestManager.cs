@@ -22,9 +22,8 @@ public class QuestManager : MonoBehaviour
         GameEventsManager.instance.questEvents.onStartQuest += StartQuest;
         GameEventsManager.instance.questEvents.onAdvanceQuest += AdvanceQuest;
         GameEventsManager.instance.questEvents.onFinishQuest += FinishQuest;
-
         GameEventsManager.instance.questEvents.onQuestStepStateChange += QuestStepStateChange;
-
+        GameEventsManager.instance.questEvents.onQuestAccepted += QuestAccepted;
     }
 
     void OnDisable()
@@ -32,22 +31,18 @@ public class QuestManager : MonoBehaviour
         GameEventsManager.instance.questEvents.onStartQuest -= StartQuest;
         GameEventsManager.instance.questEvents.onAdvanceQuest -= AdvanceQuest;
         GameEventsManager.instance.questEvents.onFinishQuest -= FinishQuest;
-
         GameEventsManager.instance.questEvents.onQuestStepStateChange -= QuestStepStateChange;
-
+        GameEventsManager.instance.questEvents.onQuestAccepted -= QuestAccepted;
     }
 
     void Start()
     {
-        
         foreach (Quest quest in questMap.Values)
         {
-            // initialize any loaded quest steps
             if (quest.state == QuestState.IN_PROGRESS)
             {
                 quest.InstantiateCurrentQuestStep(this.transform);
             }
-            // broadcast the initial state of all quests on startup
             GameEventsManager.instance.questEvents.QuestStateChange(quest);
         }
     }
@@ -67,7 +62,6 @@ public class QuestManager : MonoBehaviour
     bool CheckRequirementsMet(Quest quest)
     {
         bool meetsRequirements = true;
-
 
         foreach (QuestInfoSO prerequisiteQuestInfo in quest.info.questPrerequisites)
         {
@@ -117,15 +111,8 @@ public class QuestManager : MonoBehaviour
     void FinishQuest(string id)
     {
         Quest quest = GetQuestById(id);
-        // ClaimRewards(quest);
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
     }
-
-    // void ClaimRewards(Quest quest)
-    // {
-    //     GameEventsManager.instance.goldEvents.GoldGained(quest.info.goldReward);
-    //     GameEventsManager.instance.playerEvents.ExperienceGained(quest.info.experienceReward);
-    // }
 
     void QuestStepStateChange(string id, int stepIndex, QuestStepState questStepState)
     {
@@ -134,25 +121,28 @@ public class QuestManager : MonoBehaviour
         ChangeQuestState(id, quest.state);
     }
 
+    void QuestAccepted(string questId)
+    {
+        Quest quest = GetQuestById(questId);
+        GameEventsManager.instance.questEvents.QuestStateChange(quest);
+    }
+
     Dictionary<string, Quest> CreateQuestMap()
     {
         QuestInfoSO[] allQuests = Resources.LoadAll<QuestInfoSO>("Quests");
         Dictionary<string, Quest> idToQuestMap = new Dictionary<string, Quest>();
         foreach (QuestInfoSO questInfo in allQuests)
         {
-            
             if (idToQuestMap.ContainsKey(questInfo.id))
             {
                 Debug.LogWarning("Duplicate ID found when creating quest map: " + questInfo.id);
             }
             idToQuestMap.Add(questInfo.id, new Quest(questInfo));
-            Debug.Log(idToQuestMap[questInfo.id]);
-            
         }
         return idToQuestMap;
     }
 
-    Quest GetQuestById(string id)
+    public Quest GetQuestById(string id)
     {
         Quest quest = questMap[id];
         if (quest == null)
@@ -189,7 +179,6 @@ public class QuestManager : MonoBehaviour
         Quest quest = null;
         try 
         {
-            // load quest from saved data
             if (PlayerPrefs.HasKey(questInfo.id) && loadQuestState)
             {
                 string serializedData = PlayerPrefs.GetString(questInfo.id);

@@ -32,10 +32,13 @@ public class QuestEvents
     public event Action<Quest> onQuestStateChange;
     public void QuestStateChange(Quest quest)
     {
-        if (onQuestStateChange != null)
-        {
-            onQuestStateChange(quest);
-        }
+        onQuestStateChange?.Invoke(quest);
+    }
+
+    public event Action<string> onQuestAccepted;
+    public void QuestAccepted(string questId)
+    {
+        onQuestAccepted?.Invoke(questId);
     }
 
     public event Action<string, int, QuestStepState> onQuestStepStateChange;
