@@ -13,7 +13,7 @@ public class Walker : State
     {
         base.Enter();
         player.IsMoving = true;
-        player.anim.Play("Walker");
+        player.anim.Play("Walking");
         player.agent.isStopped = false;
     }
 
