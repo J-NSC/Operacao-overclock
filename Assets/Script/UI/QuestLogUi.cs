@@ -63,8 +63,8 @@ public class QuestLogUI : MonoBehaviour
     }
 
    void QuestStateChange(Quest quest)
-{
-    if (quest.state == QuestState.IN_PROGRESS)
+    {
+    if (quest.state == QuestState.IN_PROGRESS || quest.state == QuestState.FINISHED)
     {
         QuestLogButton questLogButton = scrollingList.CreateButtonIfNotExists(quest, () => {
             SetQuestLogInfo(quest);

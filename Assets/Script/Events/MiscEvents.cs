@@ -3,17 +3,11 @@ using System;
 
 public class MiscEvents
 {
-    public event Action onCoinCollected;
+    public event Action onValidedTask;
 
-    public void CoinsCollected()
+    public void ValidedTask()
     {
-        onCoinCollected?.Invoke();
+        onValidedTask?.Invoke();
     }
-    
-    public event Action onGemCollected;
-
-    public void GemsCollected()
-    {
-        onCoinCollected?.Invoke();
-    }
+   
 }

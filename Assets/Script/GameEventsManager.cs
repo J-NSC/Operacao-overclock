@@ -9,6 +9,7 @@ public class GameEventsManager : MonoBehaviour
     public QuestEvents questEvents;
     public InputEvent InputEvent;
     public DialogQuestEvents dialogQuestEvents;
+    public CaculateRoomEvents caculateRoomEvents;
 
     void Awake()
     {
@@ -23,5 +24,6 @@ public class GameEventsManager : MonoBehaviour
         questEvents = new QuestEvents();
         InputEvent = new InputEvent();
         dialogQuestEvents = new DialogQuestEvents();
+        caculateRoomEvents = new CaculateRoomEvents();
     }
 }

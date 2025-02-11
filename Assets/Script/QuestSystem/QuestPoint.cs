@@ -25,7 +25,9 @@ public class QuestPoint : MonoBehaviour
     void Awake() 
     {
         questId = questInfoForPoint.id;
+
         questIcon = GetComponentInChildren<QuestIcon>();
+        
     }
 
     void OnEnable()
@@ -40,25 +42,6 @@ public class QuestPoint : MonoBehaviour
         // GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 
-    // void SubmitPressed(InputEventContext inputEventContext)
-    // {
-    //     if (!playerIsNear || !inputEventContext.Equals(InputEventContext.DEFAULT))
-    //     {
-    //         return;
-    //     }
-    //
-    //     // if we have a knot name defined, try to start dialogue with it
-    //     if (!dialogueKnotName.Equals("")) 
-    //     {
-    //         GameEventsManager.instance.dialogueEvents.EnterDialogue(dialogueKnotName);
-    //     }
-    //     // otherwise, start or finish the quest immediately without dialogue
-    //     else 
-    //     {
-
-    //     }
-    // }
-
     void Update()
     {
         if (playerIsNear)
@@ -67,22 +50,28 @@ public class QuestPoint : MonoBehaviour
             {
                 // GameEventsManager.instance.questEvents.StartQuest(questId);
                 GameEventsManager.instance.dialogQuestEvents.ShowDialogedQuest(questId);
-
             }
-            else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
-            {
-                GameEventsManager.instance.questEvents.FinishQuest(questId);
-            }
+            // else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
+            // {
+            //     GameEventsManager.instance.questEvents.FinishQuest(questId);
+            // }
         }
+
        
     }
 
     void QuestStateChange(Quest quest)
     {
+        if (quest.state == QuestState.IN_PROGRESS)
+        {
+            Destroy(this.gameObject);
+        }
+        
         if (quest.info.id.Equals(questId))
         {
             currentQuestState = quest.state;
         }
+
     }
 
 

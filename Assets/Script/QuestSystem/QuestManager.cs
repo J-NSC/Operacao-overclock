@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -92,6 +93,7 @@ public class QuestManager : MonoBehaviour
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
     }
 
+
     void AdvanceQuest(string id)
     {
         Quest quest = GetQuestById(id);
@@ -151,6 +153,12 @@ public class QuestManager : MonoBehaviour
         }
         return quest;
     }
+    
+    public List<Quest> GetAllQuests()
+    {
+        return new List<Quest>(questMap.Values);
+    }
+
 
     void OnApplicationQuit()
     {

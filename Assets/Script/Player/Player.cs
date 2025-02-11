@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
-    // PlayerInputs _inputs;
     public NavMeshAgent agent;
 
     [SerializeField] ParticleSystem clickEffect;
@@ -24,6 +23,8 @@ public class Player : MonoBehaviour
     public Animator anim;
     public Rigidbody rb;
 
+    private bool isHudActive = false; 
+
     void Awake()
     {
         StateMachine = new StateMachine();
@@ -34,12 +35,12 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-
     }
 
     void OnEnable()
     {
         GameEventsManager.instance.InputEvent.OnTouchEvent += ClickToMove;
+        GameEventsManager.instance.InputEvent.IsHudActived += SetHudActive;
     }
 
     void OnDisable()
@@ -80,6 +81,11 @@ public class Player : MonoBehaviour
 
     void ClickToMove(Vector2 touchPosition)
     {
+        if (isHudActive)
+        {
+            return; 
+        }
+
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(touchPosition), out hit, 100, clickbleLayers))
         {
@@ -95,5 +101,10 @@ public class Player : MonoBehaviour
             direction = (agent.destination - transform.position).normalized;
             StateMachine.ChangeState(Walker);
         }
+    }
+
+    public void SetHudActive(bool isActive)
+    {
+        isHudActive = isActive;
     }
 }
