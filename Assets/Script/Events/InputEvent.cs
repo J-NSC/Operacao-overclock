@@ -18,7 +18,7 @@ public class InputEvent
 
     void TouchPress(InputAction.CallbackContext context)
     {
-            Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+                Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             OnTouchEvent?.Invoke(touchPosition);
     }
 

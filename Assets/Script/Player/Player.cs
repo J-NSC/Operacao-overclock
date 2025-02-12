@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] ParticleSystem clickEffect;
     [SerializeField] LayerMask clickbleLayers;
-
     public StateMachine StateMachine;
     
     public Idle Idle;
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
+
     void OnEnable()
     {
         GameEventsManager.instance.InputEvent.OnTouchEvent += ClickToMove;
@@ -46,6 +47,8 @@ public class Player : MonoBehaviour
     void OnDisable()
     {
         GameEventsManager.instance.InputEvent.OnTouchEvent -= ClickToMove;
+        GameEventsManager.instance.InputEvent.IsHudActived -= SetHudActive;
+
     }
     
     void Start()
@@ -78,6 +81,7 @@ public class Player : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
+    
 
     void ClickToMove(Vector2 touchPosition)
     {

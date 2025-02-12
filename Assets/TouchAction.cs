@@ -50,6 +50,34 @@ public partial class @TouchAction: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Main"",
+            ""id"": ""7a8f6558-217c-4be1-a9d5-da9230865963"",
+            ""actions"": [
+                {
+                    ""name"": ""Mov"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7ea15fe-106b-4929-8678-9a479f06a313"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b4eb4468-68c1-4c4b-b139-1b4fd55c8e3a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mov"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -57,11 +85,15 @@ public partial class @TouchAction: IInputActionCollection2, IDisposable
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_TouchPosition = m_Touch.FindAction("TouchPosition", throwIfNotFound: true);
+        // Main
+        m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
+        m_Main_Mov = m_Main.FindAction("Mov", throwIfNotFound: true);
     }
 
     ~@TouchAction()
     {
         UnityEngine.Debug.Assert(!m_Touch.enabled, "This will cause a leak and performance issues, TouchAction.Touch.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Main.enabled, "This will cause a leak and performance issues, TouchAction.Main.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -165,8 +197,58 @@ public partial class @TouchAction: IInputActionCollection2, IDisposable
         }
     }
     public TouchActions @Touch => new TouchActions(this);
+
+    // Main
+    private readonly InputActionMap m_Main;
+    private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
+    private readonly InputAction m_Main_Mov;
+    public struct MainActions
+    {
+        private @TouchAction m_Wrapper;
+        public MainActions(@TouchAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Mov => m_Wrapper.m_Main_Mov;
+        public InputActionMap Get() { return m_Wrapper.m_Main; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainActions set) { return set.Get(); }
+        public void AddCallbacks(IMainActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MainActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainActionsCallbackInterfaces.Add(instance);
+            @Mov.started += instance.OnMov;
+            @Mov.performed += instance.OnMov;
+            @Mov.canceled += instance.OnMov;
+        }
+
+        private void UnregisterCallbacks(IMainActions instance)
+        {
+            @Mov.started -= instance.OnMov;
+            @Mov.performed -= instance.OnMov;
+            @Mov.canceled -= instance.OnMov;
+        }
+
+        public void RemoveCallbacks(IMainActions instance)
+        {
+            if (m_Wrapper.m_MainActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMainActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MainActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MainActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MainActions @Main => new MainActions(this);
     public interface ITouchActions
     {
         void OnTouchPosition(InputAction.CallbackContext context);
+    }
+    public interface IMainActions
+    {
+        void OnMov(InputAction.CallbackContext context);
     }
 }
