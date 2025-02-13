@@ -19,23 +19,21 @@ MonoBehaviour:
   BlocksColumns: 3
   blocks:
   - Id: 0
-    StartPos: {x: 1, y: 1}
-    CenterPos: {x: 0, y: 0}
-    BlocksPositions:
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
-    - {x: -1, y: 0}
-  - Id: 1
     StartPos: {x: 1, y: 0}
     CenterPos: {x: 0, y: 0}
     BlocksPositions:
-    - {x: 0, y: 0}
     - {x: 1, y: 0}
-    - {x: -1, y: 0}
-  - Id: 2
+  - Id: 1
     StartPos: {x: 1, y: 2}
     CenterPos: {x: 0, y: 0}
     BlocksPositions:
-    - {x: 0, y: 0}
     - {x: 1, y: 0}
+  - Id: 2
+    StartPos: {x: 1, y: 5}
+    CenterPos: {x: 0, y: 0}
+    BlocksPositions:
+    - {x: 1, y: 0}
+    - {x: 0, y: 0}
     - {x: -1, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
